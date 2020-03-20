@@ -11,21 +11,19 @@ local infected = true;
 
 local function eventHandler(self, event, ...)
     -- Check if the saved variables are set and set them if not
-    if event == "ADDON_LOADED" then
+    iif event == "ADDON_LOADED" then
         addonName = ...
 
         if (addonName == "CoronaV") then
-            -- Our saved variables are ready at this point. If there are none, both variables will set to nil.
-            if HasCorona == nil then
-                infectionChance = math.random(0,100);
-            
-                -- 20% chance of getting covid when starting
-                if (infectionChance > 80) then
-                    SendChatMessage("I HAVE BEEN INFECTED BY THE CORONA!" , "YELL", nil);
-                    HasCorona = true
-                else
-                    HasCorona = false;
-                end
+            infectionChance = math.random(0,100);
+        
+            -- 20% chance of getting covid when starting
+            if (infectionChance > 80) then
+                SendChatMessage("I HAVE BEEN INFECTED BY THE CORONA!" , "YELL", nil);
+                alarm(3600, function() HasCorona = false; end);
+                HasCorona = true
+            else
+                HasCorona = false;
             end
         end
     end
