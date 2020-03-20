@@ -1,1 +1,1 @@
-# CoronaV
+# CoronaV Classic WoW Addon
