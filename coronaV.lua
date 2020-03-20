@@ -76,7 +76,7 @@ SlashCmdList["TEST"] = function(msg)
 
     if (testChance > 30 and HasCorona) then
         SendChatMessage("I HAVE THE CORONA!" , "YELL", nil);
-    elseif (testChance > 30 and not HasCorona) then
+    elseif (testChance > 50 and not HasCorona) then
         print("You have successfully avoided the corona.");
     else
         print("Sorry there are no tests avaialable for you...");
