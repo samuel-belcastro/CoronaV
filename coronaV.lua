@@ -11,7 +11,7 @@ local infected = true;
 
 local function eventHandler(self, event, ...)
     -- Check if the saved variables are set and set them if not
-    iif event == "ADDON_LOADED" then
+    if event == "ADDON_LOADED" then
         addonName = ...
 
         if (addonName == "CoronaV") then
