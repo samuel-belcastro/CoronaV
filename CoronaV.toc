@@ -1,0 +1,8 @@
+## Interface: 11303
+## Version: 0.0.1
+## Title: The Great Corona Outbreak
+## Author: Drukan, Prin
+
+## SavedVariablesPerCharacter: HasCorona
+
+coronaV.lua
