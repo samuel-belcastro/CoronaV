@@ -9,6 +9,11 @@ frame:RegisterEvent("CHAT_MSG_TEXT_EMOTE");
 
 local infected = true;
 
+local function clearCorona()
+    HasCorona = false;
+    SendChatMessage("starts to feel much better!" , "EMOTE");
+end
+
 local function eventHandler(self, event, ...)
     -- Check if the saved variables are set and set them if not
     if event == "ADDON_LOADED" then
@@ -16,11 +21,13 @@ local function eventHandler(self, event, ...)
 
         if (addonName == "CoronaV") then
             infectionChance = math.random(0,100);
-        
+
             -- 20% chance of getting covid when starting
             if (infectionChance > 80) then
                 SendChatMessage("I HAVE BEEN INFECTED BY THE CORONA!" , "YELL", nil);
-                alarm(3600, function() HasCorona = false; end);
+                
+                C_Timer.After(3600, clearCorona)
+
                 HasCorona = true
             else
                 HasCorona = false;
@@ -43,7 +50,7 @@ local function eventHandler(self, event, ...)
             -- 80% chance of getting covid
             if (infectionChance > 20) then
                 -- Covid lasts 900 seconds (or 15 mina)
-                alarm(3600, function() HasCorona = false; end);
+                C_Timer.After(3600, clearCorona)
 
                 HasCorona = true
             end
@@ -77,6 +84,6 @@ SlashCmdList["TEST"] = function(msg)
     elseif (testChance > 50 and not HasCorona) then
         print("You have successfully avoided the corona.");
     else
-        print("Sorry there are no tests avaialable for you...");
+        print("Sorry there are no tests available for you...");
     end
 end 
