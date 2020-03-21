@@ -1,6 +1,7 @@
 local frame = CreateFrame("FRAME", "CoronaVFrame");
 
 local me = UnitName("player");
+local numTests = 5;
 
 -- Fired when saved variables are loaded
 frame:RegisterEvent("ADDON_LOADED");
@@ -14,6 +15,13 @@ local function clearCorona()
     SendChatMessage("starts to feel much better!" , "EMOTE");
 end
 
+local function replenishTest()
+    if (numTests < 5) then
+        print("You hear through the grapevine more tests are available.")
+        numTests = numTests + 1
+    end
+end
+
 local function eventHandler(self, event, ...)
     -- Check if the saved variables are set and set them if not
     if event == "ADDON_LOADED" then
@@ -22,10 +30,10 @@ local function eventHandler(self, event, ...)
         if (addonName == "CoronaV") then
             infectionChance = math.random(0,100);
 
-            -- 20% chance of getting covid when starting
-            if (infectionChance > 80) then
-                SendChatMessage("I HAVE BEEN INFECTED BY THE CORONA!" , "YELL", nil);
-                
+            -- 10% chance of getting covid when starting
+            if (infectionChance > 90) then
+                message("You woke up feeling a little ill.. better see a doctor.");
+                -- Covid lasts 3600 seconds (or 60 mina)
                 C_Timer.After(3600, clearCorona)
 
                 HasCorona = true
@@ -44,12 +52,12 @@ local function eventHandler(self, event, ...)
             
             -- 50% chance of shoawing symptoms
             if (infectionChance > 50) then
-                SendChatMessage("starts to feel a tightening in their chest." , "EMOTE");
+                SendChatMessage("suddenly feels a tightening in their chest." , "EMOTE");
             end
 
-            -- 80% chance of getting covid
-            if (infectionChance > 20) then
-                -- Covid lasts 900 seconds (or 15 mina)
+            -- 10% chance of getting covid
+            if (infectionChance > 1 and not HasCorona) then
+                -- Covid lasts 3600 seconds (or 60 mins)
                 C_Timer.After(3600, clearCorona)
 
                 HasCorona = true
@@ -77,13 +85,23 @@ frame:SetScript("OnEvent", eventHandler);
 SLASH_TEST1 = "/coronav"
 
 SlashCmdList["TEST"] = function(msg)
-    testChance = math.random(0,100);
-
-    if (testChance > 30 and HasCorona) then
-        SendChatMessage("I HAVE THE CORONA!" , "YELL", nil);
-    elseif (testChance > 50 and not HasCorona) then
-        print("You have successfully avoided the corona.");
+    if (numTests <= 0) then
+        numTests = 0
+        print("You have no tests available! Try again later after more tests are available to administer.")
     else
-        print("Sorry there are no tests available for you...");
+        numTests = numTests - 1;
+
+        -- Replenish a test after one minute
+        C_Timer.After(60, replenishTest)
+
+        testChance = math.random(0,100);
+        
+        if (testChance > 70 and HasCorona) then
+            SendChatMessage("I HAVE THE CORONA!" , "YELL", nil);
+        elseif (testChance > 70 and not HasCorona) then
+            print("You have successfully avoided the corona.");
+        else
+            print("This test came back inconclusive.");
+        end
     end
 end 

@@ -1,6 +1,7 @@
 ## Interface: 11303
-## Version: 0.0.1
+## Version: 0.0.2
 ## Title: The Great Corona Outbreak
+## Notes: World of Warcraft's second ever pandemic.
 ## Author: Drukan, Prin
 
 ## SavedVariablesPerCharacter: HasCorona
